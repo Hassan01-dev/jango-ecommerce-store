@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
-import { useAuth } from '../auth/AuthProvider'
-import Landing from '../layouts/Landing'
-import { publicRoutes, privateRoutes, authRoutes } from '../../routes'
+import { useAuth } from '../hooks/AuthProvider'
+import Landing from '../components/layouts/Landing'
+import { publicRoutes, privateRoutes, authRoutes } from '.'
 
 const RouterWrapper = () => {
   const { isLoggedIn } = useAuth()

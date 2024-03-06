@@ -1,3 +1,4 @@
+import React, { useMemo } from 'react'
 import {
   Navbar,
   NavbarBrand,
@@ -5,10 +6,12 @@ import {
   NavbarLink,
   NavbarToggle
 } from 'flowbite-react'
-import { useAuth } from '../auth/AuthProvider'
+import { useAuth } from '../../hooks/AuthProvider'
 
 const NavBar = () => {
   const { isLoggedIn, logout } = useAuth()
+
+  const currentPath = useMemo(() => window.location.pathname, [])
 
   return (
     <Navbar fluid rounded>
@@ -25,15 +28,17 @@ const NavBar = () => {
       <NavbarToggle />
       <NavbarCollapse>
         {isLoggedIn ? (
-          <NavbarLink onClick={logout} className="cursor-pointer">
+          <NavbarLink onClick={logout && logout} className="cursor-pointer">
             Logout
           </NavbarLink>
         ) : (
           <>
-            <NavbarLink href="/login" active>
+            <NavbarLink href="/login" active={currentPath === '/login'}>
               Login
             </NavbarLink>
-            <NavbarLink href="/signup">Signup</NavbarLink>
+            <NavbarLink href="/signup" active={currentPath === '/signup'}>
+              Signup
+            </NavbarLink>
           </>
         )}
       </NavbarCollapse>

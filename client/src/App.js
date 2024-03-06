@@ -1,6 +1,6 @@
-import { AuthProvider } from './components/auth/AuthProvider'
+import { AuthProvider } from './hooks/AuthProvider'
 import NavBar from './components/layouts/Navbar'
-import RouterWrapper from './components/routing/RouterWrapper'
+import RouterWrapper from './routes/RouterWrapper'
 import { Toaster } from 'react-hot-toast'
 
 const App = () => {
