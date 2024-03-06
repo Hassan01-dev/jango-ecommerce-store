@@ -8,7 +8,7 @@ import {
 import { useAuth } from '../auth/AuthProvider'
 
 const NavBar = () => {
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn, logout } = useAuth()
 
   return (
     <Navbar fluid rounded>
@@ -25,7 +25,9 @@ const NavBar = () => {
       <NavbarToggle />
       <NavbarCollapse>
         {isLoggedIn ? (
-          <NavbarLink href="/logout">Logout</NavbarLink>
+          <NavbarLink onClick={logout} className="cursor-pointer">
+            Logout
+          </NavbarLink>
         ) : (
           <>
             <NavbarLink href="/login" active>

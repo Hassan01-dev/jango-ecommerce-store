@@ -1,12 +1,7 @@
-import express from 'express'
 import bcrypt from 'bcryptjs'
 import User from '../models/User.js'
 
-const router = express.Router()
-
-// List All Users Endpoint
-// Request Type: GET
-router.get('/', async (req, res) => {
+const listAllUsers = async (req, res) => {
   try {
     const allUsers = await User.find({}).select(['-__v', '-password'])
 
@@ -18,11 +13,9 @@ router.get('/', async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message })
   }
-})
+}
 
-// Fetch User by ID Endpoint
-// Request Type: GET
-router.get('/:id', async (req, res) => {
+const fetchUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select([
       '-__v',
@@ -37,11 +30,9 @@ router.get('/:id', async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message })
   }
-})
+}
 
-// Update User by ID Endpoint
-// Request Type: PUT
-router.put('/:id', async (req, res) => {
+const updateUserById = async (req, res) => {
   try {
     const { name, password } = req.body
 
@@ -64,11 +55,9 @@ router.put('/:id', async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message })
   }
-})
+}
 
-// Delete User by ID Endpoint
-// Request Type: DELETE
-router.delete('/:id', async (req, res) => {
+const deleteUserById = async (req, res) => {
   try {
     let user = await User.findById(req.params.id)
     if (!user) {
@@ -80,6 +69,6 @@ router.delete('/:id', async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message })
   }
-})
+}
 
-export default router
+export default { listAllUsers, fetchUserById, updateUserById, deleteUserById }

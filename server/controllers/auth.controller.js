@@ -1,12 +1,7 @@
-import express from 'express'
 import bcrypt from 'bcryptjs'
 import User from '../models/User.js'
 
-const router = express.Router()
-
-// User Login Endpoint
-// Request Type: POST
-router.post('/login', async (req, res) => {
+const login = async (req, res) => {
   try {
     const { email, password } = req.body
 
@@ -28,9 +23,9 @@ router.post('/login', async (req, res) => {
   } catch (error) {
     res.status(400).json({ error: error.message })
   }
-})
+}
 
-router.post('/signup', async (req, res) => {
+const signup = async (req, res) => {
   try {
     const { name, email, password } = req.body
 
@@ -53,6 +48,6 @@ router.post('/signup', async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message })
   }
-})
+}
 
-export default router
+export default { login, signup }
