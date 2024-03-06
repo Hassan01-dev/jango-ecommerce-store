@@ -1,7 +1,14 @@
+import { AuthProvider } from './components/auth/AuthProvider'
+import NavBar from './components/layouts/Navbar'
+import RouterWrapper from './components/routing/RouterWrapper'
+
 const App = () => {
   return (
-    <h3 className="text-3xl text-center text-bold">Jango Ecommerce Store</h3>
-  );
+    <AuthProvider>
+      <NavBar />
+      <RouterWrapper />
+    </AuthProvider>
+  )
 }
 
-export default App;
+export default App
