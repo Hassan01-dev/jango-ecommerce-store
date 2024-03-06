@@ -14,7 +14,7 @@ connectDB()
 app.use(express.json({ extended: true }))
 app.use(cors())
 
-app.use('/api/v1', authRoutes)
-app.use('/api/v1/users', userRoutes)
+app.use('/api/', authRoutes)
+app.use('/api/users', userRoutes)
 
 app.listen(PORT, () => console.log(`Server is running on port: ${PORT}`))

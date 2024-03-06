@@ -1,6 +1,7 @@
 import { Button, Label, TextInput } from 'flowbite-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../auth/AuthProvider'
 
 const Signup = () => {
   const [error, setError] = useState('')
@@ -9,12 +10,13 @@ const Signup = () => {
   const [password, setPassword] = useState('')
 
   const navigate = useNavigate()
+  const { login } = useAuth()
 
   const handleFormSubmit = async (e) => {
     e.preventDefault()
     setError('')
     try {
-      let res = await fetch('http://localhost:3001/api/v1/signup', {
+      let res = await fetch('http://localhost:3001/api/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -23,9 +25,10 @@ const Signup = () => {
       })
       const parsedRes = await res.json()
       if (res.status === 201) {
-        navigate('/login')
+        login(parsedRes)
+        navigate('/dashboard')
       } else {
-        setError(parsedRes.error)
+        setError(parsedRes.message)
       }
     } catch (err) {
       setError(err.error)

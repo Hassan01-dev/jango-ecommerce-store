@@ -2,6 +2,7 @@ import { Button, Label, TextInput } from 'flowbite-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/AuthProvider'
+import { toast } from 'react-hot-toast'
 
 const Login = () => {
   const [error, setError] = useState('')
@@ -15,7 +16,7 @@ const Login = () => {
     e.preventDefault()
     setError('')
     try {
-      let res = await fetch('http://localhost:3001/api/v1/login', {
+      let res = await fetch('http://localhost:3001/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -24,10 +25,12 @@ const Login = () => {
       })
       const parsedRes = await res.json()
       if (res.status === 200) {
-        login()
+        toast.success('User Logged In Successfully')
+        login(parsedRes)
         navigate('/dashboard')
       } else {
-        setError(parsedRes.error)
+        toast.error('Error while Logging the User')
+        setError(parsedRes.message)
       }
     } catch (err) {
       setError(err.error)

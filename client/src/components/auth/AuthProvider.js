@@ -15,9 +15,9 @@ export const AuthProvider = ({ children }) => {
     }
   }, [])
 
-  const login = () => {
-    const expirationTime = new Date(new Date().getTime() + +24 * 60 * 60 * 1000)
-    Cookies.set('auth', JSON.stringify({ token: 'dummy' }), {
+  const login = (res) => {
+    const expirationTime = new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
+    Cookies.set('auth', JSON.stringify(res), {
       expires: expirationTime
     })
     setIsLoggedIn(true)
