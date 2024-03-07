@@ -20,7 +20,7 @@ const login = async (req, res) => {
       return res.status(400).json({ error: 'Invalid Login/Password' })
     }
 
-    const payload = { user: { id: user.id } }
+    const payload = { userId: user.id }
     jwt.sign(
       payload,
       process.env.JWT_SECRET_KEY,
@@ -77,26 +77,14 @@ const signup = async (req, res) => {
   }
 }
 
-const verfiyAuth = async (req, res) => {
+const currentUser = async (req, res) => {
   try {
-    const token = req.header('x-auth-token')
-
-    if (!token) {
-      return res
-        .status(401)
-        .json({ msg: 'Missing x-auth-token, authorization denied' })
-    }
-
-    const verified = jwt.verify(token, process.env.JWT_SECRET_KEY)
-    if (verified) {
-      return res.status(200).json({ message: 'Successfully Verified' })
-    } else {
-      return res.status(401).json({ message: 'Not Authorized' })
-    }
+    const user = await User.findById(req.userId).select(['-__v', '-password'])
+    return res.status(200).json(user)
   } catch (error) {
     console.error(error.message)
     return res.status(500).json({ message: 'Server Error' })
   }
 }
 
-export default { login, signup, verfiyAuth }
+export default { login, signup, currentUser }
