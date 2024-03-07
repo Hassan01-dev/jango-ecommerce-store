@@ -1,45 +1,38 @@
 import { Button, Label, TextInput } from 'flowbite-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../auth/AuthProvider'
+import { useAuth } from '../../hooks/AuthProvider'
+import { toast } from 'react-hot-toast'
 
 const Login = () => {
-  const [error, setError] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
-  const navigate = useNavigate()
   const { login } = useAuth()
+  const navigate = useNavigate()
 
-  const handleFormSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault()
-    setError('')
+
     try {
-      let res = await fetch('http://localhost:3001/api/v1/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password })
-      })
-      const parsedRes = await res.json()
-      if (res.status === 200) {
-        login()
+      const response = await login(email, password)
+      if (response.success) {
+        toast.success('User Logged In Successfully')
         navigate('/dashboard')
       } else {
-        setError(parsedRes.error)
+        toast.error('Error while Logging the User')
+        console.error(response.error)
       }
     } catch (err) {
-      setError(err.error)
+      toast.error('Server Error')
+      console.error(err)
     }
   }
 
   return (
     <form
       className="flex max-w-md flex-col gap-4 mx-auto"
-      onSubmit={handleFormSubmit}
+      onSubmit={handleLogin}
     >
-      <h3>{error}</h3>
       <div>
         <div className="mb-2 block">
           <Label htmlFor="email" value="Your email" />

@@ -1,43 +1,40 @@
 import { Button, Label, TextInput } from 'flowbite-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../hooks/AuthProvider'
+import { toast } from 'react-hot-toast'
 
 const Signup = () => {
-  const [error, setError] = useState('')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   const navigate = useNavigate()
+  const { signup } = useAuth() // Assuming you have a signup function in AuthProvider
 
-  const handleFormSubmit = async (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault()
-    setError('')
+
     try {
-      let res = await fetch('http://localhost:3001/api/v1/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ name, email, password })
-      })
-      const parsedRes = await res.json()
-      if (res.status === 201) {
-        navigate('/login')
+      const response = await signup(name, email, password)
+      if (response.success) {
+        toast.success('User Signed Up Successfully')
+        navigate('/dashboard')
       } else {
-        setError(parsedRes.error)
+        toast.error('Error while Signing Up the user')
+        console.error(response.error)
       }
     } catch (err) {
-      setError(err.error)
+      toast.error('Server Error')
+      console.error(err)
     }
   }
 
   return (
     <form
       className="flex max-w-md flex-col gap-4 mx-auto"
-      onSubmit={handleFormSubmit}
+      onSubmit={handleSignup}
     >
-      <h3>{error}</h3>
       <div>
         <div className="mb-2 block">
           <Label htmlFor="name" value="Your Name" />

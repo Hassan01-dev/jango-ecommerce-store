@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 import User from '../models/User.js'
 
 const login = async (req, res) => {
@@ -11,17 +12,30 @@ const login = async (req, res) => {
 
     let user = await User.findOne({ email })
     if (!user) {
-      return res.status(402).json({ error: 'User not found' })
+      return res.status(400).json({ error: 'Invalid Login/Password' })
     }
 
     const isAuthenticated = await bcrypt.compare(password, user.password)
-    if (isAuthenticated) {
-      res.status(200).json({ message: 'Login successful' })
-    } else {
-      res.status(402).json({ error: 'Invalid Email or Password' })
+    if (!isAuthenticated) {
+      return res.status(400).json({ error: 'Invalid Login/Password' })
     }
+
+    const payload = { userId: user.id }
+    jwt.sign(
+      payload,
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: '1h' },
+      (error, token) => {
+        if (error) {
+          console.error(error.message)
+          return res.status(500).json({ message: 'Server Error' })
+        }
+        return res.status(200).json({ token })
+      }
+    )
   } catch (error) {
-    res.status(400).json({ error: error.message })
+    console.error(error.message)
+    return res.status(500).json({ message: 'Server Error' })
   }
 }
 
@@ -35,7 +49,7 @@ const signup = async (req, res) => {
 
     let user = await User.findOne({ email })
     if (user) {
-      return res.status(400).json({ error: 'User already exist' })
+      return res.status(409).json({ error: 'User already exist' })
     }
 
     user = new User({ name, email, password })
@@ -44,10 +58,33 @@ const signup = async (req, res) => {
     user.password = await bcrypt.hash(password, salt)
     await user.save()
 
-    res.status(201).json({ message: 'User created successfully' })
+    const payload = { user: { id: user.id } }
+    jwt.sign(
+      payload,
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: '1h' },
+      (error, token) => {
+        if (error) {
+          console.error(error.message)
+          return res.status(500).json({ message: 'Server Error' })
+        }
+        return res.status(201).json({ token })
+      }
+    )
   } catch (error) {
-    res.status(400).json({ message: error.message })
+    console.error(error.message)
+    return res.status(500).json({ message: 'Server Error' })
   }
 }
 
-export default { login, signup }
+const currentUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId).select(['-__v', '-password'])
+    return res.status(200).json(user)
+  } catch (error) {
+    console.error(error.message)
+    return res.status(500).json({ message: 'Server Error' })
+  }
+}
+
+export default { login, signup, currentUser }
