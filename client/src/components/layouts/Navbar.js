@@ -28,15 +28,26 @@ const NavBar = () => {
       <NavbarToggle />
       <NavbarCollapse>
         {isLoggedIn ? (
-          <NavbarLink onClick={logout && logout} className="cursor-pointer">
+          <NavbarLink
+            onClick={logout && logout}
+            className="cursor-pointer hover:!text-purple-600"
+          >
             Logout
           </NavbarLink>
         ) : (
           <>
-            <NavbarLink href="/login" active={currentPath === '/login'}>
+            <NavbarLink
+              className={`${currentPath === '/login' ? '!text-purple-600' : 'hover:!text-purple-600'}`}
+              href="/login"
+              active={currentPath === '/login'}
+            >
               Login
             </NavbarLink>
-            <NavbarLink href="/signup" active={currentPath === '/signup'}>
+            <NavbarLink
+              className={`${currentPath === '/signup' ? '!text-purple-600' : 'hover:!text-purple-600'}`}
+              href="/signup"
+              active={currentPath === '/signup'}
+            >
               Signup
             </NavbarLink>
           </>
