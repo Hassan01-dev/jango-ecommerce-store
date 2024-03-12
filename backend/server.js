@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors'
-import './loadEnvironment.js'
-import connectDB from './db/config.js'
+import './config/loadEnvironment.js'
+import connectDB from './config/config.js'
 
 import userRoutes from './routes/user.routes.js'
 import authRoutes from './routes/auth.routes.js'
