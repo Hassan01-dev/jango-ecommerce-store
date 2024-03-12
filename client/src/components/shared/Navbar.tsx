@@ -14,12 +14,12 @@ const NavBar = () => {
   const currentPath = useMemo(() => window.location.pathname, [])
 
   return (
-    <Navbar fluid rounded>
+    <Navbar fluid rounded className='fixed w-full top-0'>
       <NavbarBrand href="/">
         <img
           src="/logo192.png"
           className="mr-3 h-6 sm:h-9"
-          alt="Flowbite React Logo"
+          alt="React Logo"
         />
         <span className="self-center whitespace-nowrap text-xl font-semibold">
           Jango E-Commerce Store
@@ -29,7 +29,7 @@ const NavBar = () => {
       <NavbarCollapse>
         {isLoggedIn ? (
           <NavbarLink
-            onClick={logout && logout}
+            onClick={logout}
             className="cursor-pointer hover:!text-purple-600"
           >
             Logout

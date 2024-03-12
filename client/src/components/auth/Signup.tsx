@@ -1,37 +1,34 @@
-import Input from '../../components/shared/CustomInputField'
-import Button from '../../components/shared/CustomButton'
-import SocialButton from '../../components/shared/SocialButton'
+import Input from '../shared/CustomInputField'
+import Button from '../shared/CustomButton'
+import SocialButton from '../shared/SocialButton'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/AuthProvider'
 import { toast } from 'react-hot-toast'
-import { ReactComponent as GoogleIcon } from '../../assets/icons/google.svg'
-import { ReactComponent as GithubIcon } from '../../assets/icons/github.svg'
-import { ReactComponent as TwitterIcon } from '../../assets/icons/twitter.svg'
+import googleIconPath from '../../assets/icons/google.svg'
+import githubIconPath from '../../assets/icons/github.svg'
+import twitterIconPath from '../../assets/icons/twitter.svg'
 
 const Signup = () => {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('')
+  const [email, setEmailAddress] = useState('')
+  const [password, setPasswordValue] = useState('')
 
   const navigate = useNavigate()
   const { signup } = useAuth()
 
-  const handleSignup = async (e) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
 
     try {
-      const response = await signup(name, email, password)
+      const response = await signup(username, email, password)
       if (response.success) {
-        toast.success('User Signed Up Successfully')
         navigate('/dashboard')
       } else {
         toast.error('Error while Signing Up the user')
-        console.error(response.error)
       }
-    } catch (err) {
+    } catch {
       toast.error('Server Error')
-      console.error(err)
     }
   }
 
@@ -43,11 +40,11 @@ const Signup = () => {
         </h1>
         <form className="mt-6" onSubmit={handleSignup}>
           <Input
-            id="name"
+            id="username"
             label="Name"
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={username}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
             required
           />
           <Input
@@ -55,7 +52,7 @@ const Signup = () => {
             label="Email"
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmailAddress(e.target.value)}
             required
           />
           <Input
@@ -63,7 +60,7 @@ const Signup = () => {
             label="Password"
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPasswordValue(e.target.value)}
             required
           />
           <div className="mt-6">
@@ -74,15 +71,9 @@ const Signup = () => {
           <div className="absolute px-5 bg-white">Or</div>
         </div>
         <div className="flex mt-4 gap-x-2">
-          <SocialButton>
-            <GoogleIcon />
-          </SocialButton>
-          <SocialButton>
-            <GithubIcon />
-          </SocialButton>
-          <SocialButton>
-            <TwitterIcon />
-          </SocialButton>
+          <SocialButton iconPath={googleIconPath} />
+          <SocialButton iconPath={githubIconPath} />
+          <SocialButton iconPath={twitterIconPath} />
         </div>
 
         <p className="mt-8 text-xs font-light text-center text-gray-700">

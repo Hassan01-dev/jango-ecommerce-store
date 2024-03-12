@@ -1,12 +1,28 @@
 import React, { useState, createContext, useContext, useEffect } from 'react'
 import Cookies from 'js-cookie'
+import constansts from '../utils/constants'
 
-const API_URL = 'http://localhost:3001/api'
-const AuthContext = createContext()
+const { API_URL } = constansts
 
-export const useAuth = () => useContext(AuthContext)
+// Define the type for the context
+type AuthContextType = {
+  isLoggedIn: boolean;
+  login: (email: string, password: string) => Promise<{ success: boolean, error?: string }>;
+  logout: () => void;
+  signup: (name: string, email: string, password: string) => Promise<{ success: boolean, error?: string }>;
+}
 
-export const AuthProvider = ({ children }) => {
+const AuthContext = createContext<AuthContextType | undefined>(undefined)
+
+export const useAuth = () => {
+  const context = useContext(AuthContext)
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider')
+  }
+  return context
+}
+
+export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
@@ -16,7 +32,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, [])
 
-  const handleAuth = async (endpoint, body) => {
+  const handleAuth = async (endpoint: string, body: any) => {
     try {
       const res = await fetch(`${API_URL}/${endpoint}`, {
         method: 'POST',
@@ -45,11 +61,11 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  const login = async (email, password) => {
+  const login = async (email: string, password: string) => {
     return handleAuth('login', { email, password })
   }
 
-  const signup = async (name, email, password) => {
+  const signup = async (name: string, email: string, password: string) => {
     return handleAuth('signup', { name, email, password })
   }
 
