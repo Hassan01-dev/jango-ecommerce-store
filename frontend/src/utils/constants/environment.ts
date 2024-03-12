@@ -1,7 +1,5 @@
 const assertEnvironmentVariables = () => {
-  const requiredVariables = [
-    'REACT_APP_API_URL',
-  ]
+  const requiredVariables = ['REACT_APP_API_URL']
 
   const missingVariables = requiredVariables.filter(
     (variable) => !process.env[variable]

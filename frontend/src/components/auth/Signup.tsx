@@ -9,40 +9,53 @@ import googleIconPath from '../../assets/icons/google.svg'
 import githubIconPath from '../../assets/icons/github.svg'
 import twitterIconPath from '../../assets/icons/twitter.svg'
 
-const Login = () => {
-  const [formEmail, setFormEmail] = useState<string>('')
-  const [formPassword, setFormPassword] = useState<string>('')
-  const { login } = useAuth()
-  const navigate = useNavigate()
+const Signup = () => {
+  const [username, setUsername] = useState('')
+  const [email, setEmailAddress] = useState('')
+  const [password, setPasswordValue] = useState('')
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const navigate = useNavigate()
+  const { signup } = useAuth()
+
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
+
     try {
-      const { success } = await login(formEmail, formPassword)
-      if (success) {
+      const response = await signup(username, email, password)
+      if (response.success) {
         navigate('/dashboard')
       } else {
-        toast.error('Error logging in')
+        toast.error('Error while Signing Up the user')
       }
     } catch {
-      toast.error('Server error')
+      toast.error('Server Error')
     }
   }
 
   return (
-    <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
+    <div className="relative flex flex-col justify-center min-h-[90vh] overflow-hidden">
       <div className="w-full p-6 m-auto bg-white rounded-md shadow-xl lg:max-w-xl">
         <h1 className="text-3xl font-semibold text-center text-purple-700 uppercase">
-          Sign in
+          Sign up
         </h1>
-        <form className="mt-6" onSubmit={handleSubmit}>
+        <form className="mt-6" onSubmit={handleSignup}>
+          <Input
+            id="username"
+            label="Name"
+            type="text"
+            value={username}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setUsername(e.target.value)
+            }
+            required
+          />
           <Input
             id="email"
             label="Email"
             type="email"
-            value={formEmail}
+            value={email}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setFormEmail(e.target.value)
+              setEmailAddress(e.target.value)
             }
             required
           />
@@ -50,20 +63,14 @@ const Login = () => {
             id="password"
             label="Password"
             type="password"
-            value={formPassword}
+            value={password}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setFormPassword(e.target.value)
+              setPasswordValue(e.target.value)
             }
             required
           />
-          <a
-            href="/forgot_password"
-            className="text-xs text-purple-600 hover:underline"
-          >
-            Forget Password?
-          </a>
           <div className="mt-6">
-            <Button type="submit">Login</Button>
+            <Button type="submit">Signup</Button>
           </div>
         </form>
         <div className="relative flex items-center justify-center w-full mt-6 border border-t">
@@ -76,12 +83,13 @@ const Login = () => {
         </div>
 
         <p className="mt-8 text-xs font-light text-center text-gray-700">
-          Don't have an account?{' '}
+          {' '}
+          Already have an account?{' '}
           <a
-            href="/signup"
+            href="/login"
             className="font-medium text-purple-600 hover:underline"
           >
-            Sign up
+            Login
           </a>
         </p>
       </div>
@@ -89,4 +97,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Signup

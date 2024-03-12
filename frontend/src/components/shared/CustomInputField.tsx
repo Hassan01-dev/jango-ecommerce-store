@@ -1,4 +1,4 @@
-import { CustomInputProps } from '../../utils/types/customComponent';
+import { CustomInputProps } from '../../utils/types/customComponentTypes'
 
 const CustomInputField: React.FC<CustomInputProps> = ({ label, ...rest }) => {
   return (
@@ -17,4 +17,4 @@ const CustomInputField: React.FC<CustomInputProps> = ({ label, ...rest }) => {
   )
 }
 
-export default CustomInputField;
+export default CustomInputField

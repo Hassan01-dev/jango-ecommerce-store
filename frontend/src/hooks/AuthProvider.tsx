@@ -1,16 +1,9 @@
 import React, { useState, createContext, useContext, useEffect } from 'react'
 import Cookies from 'js-cookie'
 import constansts from '../utils/constants'
+import { AuthContextType, AuthFormType } from '../utils/types/authContextTypes'
 
 const { API_URL } = constansts
-
-// Define the type for the context
-type AuthContextType = {
-  isLoggedIn: boolean;
-  login: (email: string, password: string) => Promise<{ success: boolean, error?: string }>;
-  logout: () => void;
-  signup: (name: string, email: string, password: string) => Promise<{ success: boolean, error?: string }>;
-}
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
@@ -22,7 +15,9 @@ export const useAuth = () => {
   return context
 }
 
-export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children
+}) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
@@ -32,7 +27,7 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }
     }
   }, [])
 
-  const handleAuth = async (endpoint: string, body: any) => {
+  const handleAuth = async (endpoint: string, body: AuthFormType) => {
     try {
       const res = await fetch(`${API_URL}/${endpoint}`, {
         method: 'POST',

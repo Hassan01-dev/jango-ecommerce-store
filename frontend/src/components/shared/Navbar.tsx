@@ -14,13 +14,9 @@ const NavBar = () => {
   const currentPath = useMemo(() => window.location.pathname, [])
 
   return (
-    <Navbar fluid rounded className='fixed w-full top-0'>
+    <Navbar fluid rounded>
       <NavbarBrand href="/">
-        <img
-          src="/logo192.png"
-          className="mr-3 h-6 sm:h-9"
-          alt="React Logo"
-        />
+        <img src="/logo192.png" className="mr-3 h-6 sm:h-9" alt="React Logo" />
         <span className="self-center whitespace-nowrap text-xl font-semibold">
           Jango E-Commerce Store
         </span>
