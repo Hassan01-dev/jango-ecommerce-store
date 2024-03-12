@@ -16,11 +16,7 @@ const NavBar = () => {
   return (
     <Navbar fluid rounded>
       <NavbarBrand href="/">
-        <img
-          src="/logo192.png"
-          className="mr-3 h-6 sm:h-9"
-          alt="Flowbite React Logo"
-        />
+        <img src="/logo192.png" className="mr-3 h-6 sm:h-9" alt="React Logo" />
         <span className="self-center whitespace-nowrap text-xl font-semibold">
           Jango E-Commerce Store
         </span>
@@ -29,7 +25,7 @@ const NavBar = () => {
       <NavbarCollapse>
         {isLoggedIn ? (
           <NavbarLink
-            onClick={logout && logout}
+            onClick={logout}
             className="cursor-pointer hover:!text-purple-600"
           >
             Logout

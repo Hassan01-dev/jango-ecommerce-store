@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import { useAuth } from '../hooks/AuthProvider'
-import Landing from '../components/layouts/Landing'
+import Landing from '../components/landing/Landing'
 import { publicRoutes, privateRoutes, authRoutes } from '.'
 
 const RouterWrapper = () => {
