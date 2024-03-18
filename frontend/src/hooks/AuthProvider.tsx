@@ -1,4 +1,10 @@
-import React, { useState, createContext, useContext, useEffect } from 'react'
+import React, {
+  useState,
+  createContext,
+  useContext,
+  useLayoutEffect,
+  useMemo
+} from 'react'
 import Cookies from 'js-cookie'
 import constansts from '../utils/constants'
 import {
@@ -22,19 +28,18 @@ export const useAuth = () => {
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children
 }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
-  const [isMerchant, setIsMerchant] = useState<boolean>(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [isMerchant, setIsMerchant] = useState(false)
 
-  useEffect(() => {
-    // console.log("Auth Provider", isLoggedIn)
-
+  useLayoutEffect(() => {
     const authData = Cookies.get('auth')
 
     if (authData) {
-      console.log('UseEffect', JSON.parse(authData))
       setIsLoggedIn(true)
-      // setIsMerchant(JSON.parse(authData).userType === 'merchant')
+      setIsMerchant(JSON.parse(authData).userType === 'merchant')
     }
+    setIsLoading(false)
   }, [])
 
   const handleAuth = async (endpoint: string, body: AuthFormType) => {
@@ -66,28 +71,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }
 
-  const login = async (formData: LoginFormType, userType: string = '') => {
-    const endpoint = userType === 'merchant' ? 'merchant/login' : 'login'
-    return handleAuth(endpoint, formData)
-  }
-
-  const signup = async (formData: SignupFormType) => {
-    return handleAuth('signup', formData)
-  }
-
-  const merchantSignup = async (email: string, password: string) => {
-    return handleAuth('merchant/signup', { email, password })
-  }
-
-  const logout = () => {
-    Cookies.remove('auth')
-    setIsLoggedIn(false)
-  }
+  const providerValues = useMemo<AuthContextType>(
+    () => ({
+      isLoggedIn,
+      isMerchant,
+      isLoading,
+      login: async (formData: LoginFormType, userType: string = '') => {
+        const endpoint = userType === 'merchant' ? 'merchant/login' : 'login'
+        return handleAuth(endpoint, formData)
+      },
+      logout: () => {
+        Cookies.remove('auth')
+        setIsLoggedIn(false)
+      },
+      signup: async (formData: SignupFormType) => {
+        return handleAuth('signup', formData)
+      },
+      merchantSignup: async (email: string, password: string) => {
+        return handleAuth('merchant/signup', { email, password })
+      }
+    }),
+    [isLoggedIn, isMerchant, isLoading]
+  )
 
   return (
-    <AuthContext.Provider
-      value={{ isLoggedIn, isMerchant, login, logout, signup, merchantSignup }}
-    >
+    <AuthContext.Provider value={providerValues}>
       {children}
     </AuthContext.Provider>
   )

@@ -6,11 +6,9 @@ import ProductList from '../components/product/ProductList'
 import MerchantLogin from '../components/auth/MerchantLogin'
 import MerchantSignup from '../components/auth/MerchantSignup'
 
-const publicRoutes = [
-  { path: 'about_us', component: AboutUs },
-  { path: 'products', component: ProductList }
-]
-const privateRoutes = [{ path: 'dashboard', component: Dashboard }]
+const publicRoutes = [{ path: 'about_us', component: AboutUs }]
+const userPrivateRoutes = [{ path: 'products', component: ProductList }]
+const merchantPrivateRoutes = [{ path: 'dashboard', component: Dashboard }]
 const authRoutes = [
   { path: 'login', component: Login },
   { path: 'signup', component: Signup },
@@ -18,4 +16,4 @@ const authRoutes = [
   { path: 'merchant/signup', component: MerchantSignup }
 ]
 
-export { publicRoutes, privateRoutes, authRoutes }
+export { publicRoutes, userPrivateRoutes, merchantPrivateRoutes, authRoutes }

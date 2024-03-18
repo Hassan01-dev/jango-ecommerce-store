@@ -1,6 +1,7 @@
 export type AuthContextType = {
   isLoggedIn: boolean
   isMerchant: boolean
+  isLoading: boolean
   login: (
     formData: LoginFormType,
     userType?: string

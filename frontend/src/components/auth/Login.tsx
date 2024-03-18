@@ -5,9 +5,9 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/AuthProvider'
 import { toast } from 'react-hot-toast'
-import googleIconPath from '../../assets/icons/google.svg'
-import githubIconPath from '../../assets/icons/github.svg'
-import twitterIconPath from '../../assets/icons/twitter.svg'
+import GoogleIcon from '../../assets/icons/google'
+import GithubIcon from '../../assets/icons/github'
+import TwitterIcon from '../../assets/icons/twitter'
 import { LoginFormType } from '../../utils/types/authContextTypes'
 
 const Login = () => {
@@ -29,7 +29,7 @@ const Login = () => {
     try {
       const { success } = await login(formData)
       if (success) {
-        navigate('/dashboard')
+        navigate('/products')
       } else {
         toast.error('Error logging in')
       }
@@ -86,9 +86,9 @@ const Login = () => {
           <div className="absolute px-5 bg-white">Or</div>
         </div>
         <div className="flex mt-4 gap-x-2">
-          <SocialButton iconPath={googleIconPath} />
-          <SocialButton iconPath={githubIconPath} />
-          <SocialButton iconPath={twitterIconPath} />
+          <SocialButton icon={GoogleIcon} />
+          <SocialButton icon={GithubIcon} />
+          <SocialButton icon={TwitterIcon} />
         </div>
 
         <p className="mt-8 text-xs font-light text-center text-gray-700">

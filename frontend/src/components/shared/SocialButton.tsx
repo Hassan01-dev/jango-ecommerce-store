@@ -1,7 +1,7 @@
 import toast from 'react-hot-toast'
 import { SocialButtonComponentProps } from '../../utils/types/customComponentTypes'
 const SocialButton: React.FC<SocialButtonComponentProps> = ({
-  iconPath,
+  icon: SocialIcon,
   ...rest
 }) => {
   const handleSocialIntegration = () => {
@@ -14,7 +14,7 @@ const SocialButton: React.FC<SocialButtonComponentProps> = ({
       onClick={handleSocialIntegration}
       {...rest}
     >
-      <img src={iconPath} alt="Social Icon" width={20} />
+      <SocialIcon />
     </button>
   )
 }
