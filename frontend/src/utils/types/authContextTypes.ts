@@ -1,19 +1,35 @@
 export type AuthContextType = {
   isLoggedIn: boolean
+  isMerchant: boolean
   login: (
-    email: string,
-    password: string
+    formData: LoginFormType,
+    userType?: string
   ) => Promise<{ success: boolean; error?: string }>
   logout: () => void
   signup: (
-    name: string,
+    formData: SignupFormType
+  ) => Promise<{ success: boolean; error?: string }>
+  merchantSignup: (
     email: string,
     password: string
   ) => Promise<{ success: boolean; error?: string }>
 }
 
 export type AuthFormType = {
-  name?: string
+  firstName?: string
+  lastName?: string
+  email: string
+  password: string
+}
+
+export type SignupFormType = {
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+}
+
+export type LoginFormType = {
   email: string
   password: string
 }

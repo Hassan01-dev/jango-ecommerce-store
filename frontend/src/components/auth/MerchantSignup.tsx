@@ -8,30 +8,20 @@ import { toast } from 'react-hot-toast'
 import googleIconPath from '../../assets/icons/google.svg'
 import githubIconPath from '../../assets/icons/github.svg'
 import twitterIconPath from '../../assets/icons/twitter.svg'
-import { SignupFormType } from '../../utils/types/authContextTypes'
 
-const Signup = () => {
-  const [formData, setFormData] = useState<SignupFormType>({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: ''
-  })
-
-  const { firstName, lastName, email, password } = formData
-
-  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
+const MerchantSignup = () => {
+  const [username, setUsername] = useState('')
+  const [email, setEmailAddress] = useState('')
+  const [password, setPasswordValue] = useState('')
 
   const navigate = useNavigate()
-  const { signup } = useAuth()
+  const { merchantSignup } = useAuth()
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
 
     try {
-      const response = await signup(formData)
+      const response = await merchantSignup(email, password)
       if (response.success) {
         navigate('/dashboard')
       } else {
@@ -46,45 +36,37 @@ const Signup = () => {
     <div className="relative flex flex-col justify-center min-h-[90vh] overflow-hidden">
       <div className="w-full p-6 m-auto bg-white rounded-md shadow-xl lg:max-w-xl">
         <h1 className="text-3xl font-semibold text-center text-purple-700 uppercase">
-          Sign up
+          Merchant Sign up
         </h1>
         <form className="mt-6" onSubmit={handleSignup}>
-          <div className="flex gap-4">
-            <Input
-              id="firstName"
-              label="First Name"
-              type="text"
-              name="firstName"
-              value={firstName}
-              onChange={handleFormChange}
-              required
-            />
-            <Input
-              id="lastName"
-              label="Last Name"
-              type="text"
-              name="lastName"
-              value={lastName}
-              onChange={handleFormChange}
-              required
-            />
-          </div>
+          <Input
+            id="username"
+            label="Name"
+            type="text"
+            value={username}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setUsername(e.target.value)
+            }
+            required
+          />
           <Input
             id="email"
             label="Email"
             type="email"
-            name="email"
             value={email}
-            onChange={handleFormChange}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setEmailAddress(e.target.value)
+            }
             required
           />
           <Input
             id="password"
             label="Password"
             type="password"
-            name="password"
             value={password}
-            onChange={handleFormChange}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setPasswordValue(e.target.value)
+            }
             required
           />
           <div className="mt-6">
@@ -115,4 +97,4 @@ const Signup = () => {
   )
 }
 
-export default Signup
+export default MerchantSignup

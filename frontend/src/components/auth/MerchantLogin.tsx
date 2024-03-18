@@ -8,37 +8,32 @@ import { toast } from 'react-hot-toast'
 import googleIconPath from '../../assets/icons/google.svg'
 import githubIconPath from '../../assets/icons/github.svg'
 import twitterIconPath from '../../assets/icons/twitter.svg'
-import { SignupFormType } from '../../utils/types/authContextTypes'
+import { LoginFormType } from '../../utils/types/authContextTypes'
 
-const Signup = () => {
-  const [formData, setFormData] = useState<SignupFormType>({
-    firstName: '',
-    lastName: '',
+const MerchantLogin = () => {
+  const [formData, setFormData] = useState<LoginFormType>({
     email: '',
     password: ''
   })
-
-  const { firstName, lastName, email, password } = formData
+  const { email, password } = formData
+  const { login } = useAuth()
+  const navigate = useNavigate()
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const navigate = useNavigate()
-  const { signup } = useAuth()
-
-  const handleSignup = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
     try {
-      const response = await signup(formData)
-      if (response.success) {
+      const { success } = await login(formData, 'merchant')
+      if (success) {
         navigate('/dashboard')
       } else {
-        toast.error('Error while Signing Up the user')
+        toast.error('Error logging in')
       }
     } catch {
-      toast.error('Server Error')
+      toast.error('Server error')
     }
   }
 
@@ -46,29 +41,9 @@ const Signup = () => {
     <div className="relative flex flex-col justify-center min-h-[90vh] overflow-hidden">
       <div className="w-full p-6 m-auto bg-white rounded-md shadow-xl lg:max-w-xl">
         <h1 className="text-3xl font-semibold text-center text-purple-700 uppercase">
-          Sign up
+          Merchant Sign in
         </h1>
-        <form className="mt-6" onSubmit={handleSignup}>
-          <div className="flex gap-4">
-            <Input
-              id="firstName"
-              label="First Name"
-              type="text"
-              name="firstName"
-              value={firstName}
-              onChange={handleFormChange}
-              required
-            />
-            <Input
-              id="lastName"
-              label="Last Name"
-              type="text"
-              name="lastName"
-              value={lastName}
-              onChange={handleFormChange}
-              required
-            />
-          </div>
+        <form className="mt-6" onSubmit={handleSubmit}>
           <Input
             id="email"
             label="Email"
@@ -87,8 +62,23 @@ const Signup = () => {
             onChange={handleFormChange}
             required
           />
+          <p className="flex justify-between">
+            <a
+              href="/forgot_password"
+              className="text-xs text-purple-600 hover:underline"
+            >
+              Forget Password?
+            </a>
+            <a
+              href="/merchant/login"
+              className="text-xs text-purple-600 hover:underline"
+            >
+              Merchant Account?
+            </a>
+          </p>
+
           <div className="mt-6">
-            <Button type="submit">Signup</Button>
+            <Button type="submit">Login</Button>
           </div>
         </form>
         <div className="relative flex items-center justify-center w-full mt-6 border border-t">
@@ -101,13 +91,12 @@ const Signup = () => {
         </div>
 
         <p className="mt-8 text-xs font-light text-center text-gray-700">
-          {' '}
-          Already have an account?{' '}
+          Ready to boost your business?{' '}
           <a
-            href="/login"
+            href="/merchant/signup"
             className="font-medium text-purple-600 hover:underline"
           >
-            Login
+            Sign up
           </a>
         </p>
       </div>
@@ -115,4 +104,4 @@ const Signup = () => {
   )
 }
 
-export default Signup
+export default MerchantLogin

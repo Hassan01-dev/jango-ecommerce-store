@@ -5,6 +5,7 @@ import { publicRoutes, privateRoutes, authRoutes } from '.'
 
 const RouterWrapper = () => {
   const { isLoggedIn } = useAuth()
+  console.log('routes wrapper', isLoggedIn)
 
   return (
     <BrowserRouter>

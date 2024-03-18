@@ -25,7 +25,15 @@ const MerchantSchema = new Schema<MerchantModelType>(
       ]
     },
     password: { type: String, required: [true, 'Password is required'] },
-    sku: { type: String, required: true, unique: true },
+    sku: {
+      type: String,
+      required: true,
+      unique: true,
+      match: [
+        /^[A-Za-z0-9-_]+$/,
+        'SKU must only contain letters, numbers, dashes and underscores'
+      ]
+    },
     website: { type: String, default: '', trim: true },
     logo: { type: String, default: '' },
     socialMedia: [

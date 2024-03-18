@@ -40,11 +40,11 @@ const NavBar = () => {
               Login
             </NavbarLink>
             <NavbarLink
-              className={`${currentPath === '/signup' ? '!text-purple-600' : 'hover:!text-purple-600'}`}
-              href="/signup"
-              active={currentPath === '/signup'}
+              className={`${currentPath === '/merchant/login' ? '!text-purple-600' : 'hover:!text-purple-600'}`}
+              href="/merchant/login"
+              active={currentPath === '/merchant/login'}
             >
-              Signup
+              Merchant
             </NavbarLink>
           </>
         )}

@@ -1,10 +1,14 @@
 import React, { useState, createContext, useContext, useEffect } from 'react'
 import Cookies from 'js-cookie'
 import constansts from '../utils/constants'
-import { AuthContextType, AuthFormType } from '../utils/types/authContextTypes'
+import {
+  AuthContextType,
+  AuthFormType,
+  LoginFormType,
+  SignupFormType
+} from '../utils/types/authContextTypes'
 
 const { API_URL } = constansts
-
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export const useAuth = () => {
@@ -18,12 +22,18 @@ export const useAuth = () => {
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children
 }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
+  const [isMerchant, setIsMerchant] = useState<boolean>(false)
 
   useEffect(() => {
+    // console.log("Auth Provider", isLoggedIn)
+
     const authData = Cookies.get('auth')
+
     if (authData) {
+      console.log('UseEffect', JSON.parse(authData))
       setIsLoggedIn(true)
+      // setIsMerchant(JSON.parse(authData).userType === 'merchant')
     }
   }, [])
 
@@ -46,22 +56,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           expires: expirationTime
         })
         setIsLoggedIn(true)
+        setIsMerchant(parsedRes.userType === 'merchant')
         return { success: true }
       } else {
         return { success: false, error: parsedRes.message || 'Server Error' }
       }
     } catch (err) {
-      console.error(err)
       return { success: false, error: 'Server Error' }
     }
   }
 
-  const login = async (email: string, password: string) => {
-    return handleAuth('login', { email, password })
+  const login = async (formData: LoginFormType, userType: string = '') => {
+    const endpoint = userType === 'merchant' ? 'merchant/login' : 'login'
+    return handleAuth(endpoint, formData)
   }
 
-  const signup = async (name: string, email: string, password: string) => {
-    return handleAuth('signup', { name, email, password })
+  const signup = async (formData: SignupFormType) => {
+    return handleAuth('signup', formData)
+  }
+
+  const merchantSignup = async (email: string, password: string) => {
+    return handleAuth('merchant/signup', { email, password })
   }
 
   const logout = () => {
@@ -70,7 +85,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout, signup }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, isMerchant, login, logout, signup, merchantSignup }}
+    >
       {children}
     </AuthContext.Provider>
   )
