@@ -5,17 +5,34 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/AuthProvider'
 import { toast } from 'react-hot-toast'
-import GoogleIcon from '../../assets/icons/google'
-import GithubIcon from '../../assets/icons/github'
-import TwitterIcon from '../../assets/icons/twitter'
+import {
+  GoogleIcon,
+  GithubIcon,
+  TwitterIcon,
+  FacebookIcon,
+  InstagramIcon,
+  WebLinkIcon,
+  YouTubeIcon,
+  LinkedInIcon
+} from '../../assets/icons'
+import { MerchantSignupFormType } from '../../utils/types/authContextTypes'
 
 const MerchantSignup = () => {
-  const [username, setUsername] = useState('')
-  const [email, setEmailAddress] = useState('')
-  const [password, setPasswordValue] = useState('')
+  const [formData, setFormData] = useState<MerchantSignupFormType>({
+    name: '',
+    sku: '',
+    email: '',
+    password: ''
+  })
+
+  const { name, sku, email, password } = formData
 
   const navigate = useNavigate()
   const { merchantSignup } = useAuth()
+
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -40,35 +57,102 @@ const MerchantSignup = () => {
         </h1>
         <form className="mt-6" onSubmit={handleSignup}>
           <Input
-            id="username"
+            id="Fullname"
             label="Name"
             type="text"
-            value={username}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setUsername(e.target.value)
-            }
+            name="name"
+            value={name}
+            onChange={handleFormChange}
+            required
+          />
+          <Input
+            id="Sku"
+            label="Sku"
+            type="text"
+            name="sku"
+            value={sku}
+            onChange={handleFormChange}
             required
           />
           <Input
             id="email"
             label="Email"
             type="email"
+            name="email"
             value={email}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setEmailAddress(e.target.value)
-            }
+            onChange={handleFormChange}
             required
           />
           <Input
             id="password"
             label="Password"
             type="password"
+            name="password"
             value={password}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setPasswordValue(e.target.value)
-            }
+            onChange={handleFormChange}
             required
           />
+          <h3>Social Links</h3>
+          <Input
+            id="website"
+            type="text"
+            name="website"
+            value=""
+            icon={WebLinkIcon}
+            onChange={handleFormChange}
+            required
+          />
+
+          <Input
+            id="youtube"
+            type="text"
+            name="youtube"
+            value=""
+            icon={YouTubeIcon}
+            onChange={handleFormChange}
+            required
+          />
+
+          <Input
+            id="twitter"
+            type="text"
+            name="twitter"
+            value=""
+            icon={TwitterIcon}
+            onChange={handleFormChange}
+            required
+          />
+
+          <Input
+            id="facebook"
+            type="text"
+            name="facebook"
+            value=""
+            icon={FacebookIcon}
+            onChange={handleFormChange}
+            required
+          />
+
+          <Input
+            id="linkedin"
+            type="text"
+            name="linkedin"
+            value=""
+            icon={LinkedInIcon}
+            onChange={handleFormChange}
+            required
+          />
+
+          <Input
+            id="instagram"
+            type="text"
+            name="instagram"
+            value=""
+            icon={InstagramIcon}
+            onChange={handleFormChange}
+            required
+          />
+
           <div className="mt-6">
             <Button type="submit">Signup</Button>
           </div>

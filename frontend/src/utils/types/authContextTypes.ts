@@ -34,3 +34,10 @@ export type LoginFormType = {
   email: string
   password: string
 }
+
+export type MerchantSignupFormType = {
+  name: string
+  sku: string
+  email: string
+  password: string
+}

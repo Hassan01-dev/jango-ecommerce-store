@@ -5,9 +5,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/AuthProvider'
 import { toast } from 'react-hot-toast'
-import GoogleIcon from '../../assets/icons/google'
-import GithubIcon from '../../assets/icons/github'
-import TwitterIcon from '../../assets/icons/twitter'
+import { GoogleIcon, GithubIcon, TwitterIcon } from '../../assets/icons'
 import { LoginFormType } from '../../utils/types/authContextTypes'
 
 const Login = () => {

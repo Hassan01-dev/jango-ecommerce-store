@@ -1,6 +1,7 @@
 export interface CustomInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
-  label: string
+  label?: string
+  icon?: React.FC<React.SVGProps<SVGSVGElement>>
 }
 
 export interface SocialButtonComponentProps
