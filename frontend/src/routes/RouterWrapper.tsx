@@ -1,10 +1,20 @@
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
+import { Route, Routes, Navigate, BrowserRouter } from 'react-router-dom'
 import { useAuth } from '../hooks/AuthProvider'
 import Landing from '../components/landing/Landing'
-import { publicRoutes, privateRoutes, authRoutes } from '.'
+import {
+  publicRoutes,
+  userPrivateRoutes,
+  merchantPrivateRoutes,
+  authRoutes
+} from '.'
+import Loader from '../components/shared/Loader'
 
 const RouterWrapper = () => {
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn, isLoading, isMerchant } = useAuth()
+
+  if (isLoading) {
+    return <Loader />
+  }
 
   return (
     <BrowserRouter>
@@ -20,24 +30,28 @@ const RouterWrapper = () => {
           )
         })}
         {isLoggedIn
-          ? privateRoutes.map((route, index) => {
-              return (
+          ? isMerchant
+            ? merchantPrivateRoutes.map((route, index) => (
                 <Route
                   key={index}
                   path={route.path}
                   element={<route.component />}
                 />
-              )
-            })
-          : authRoutes.map((route, index) => {
-              return (
+              ))
+            : userPrivateRoutes.map((route, index) => (
                 <Route
                   key={index}
                   path={route.path}
                   element={<route.component />}
                 />
-              )
-            })}
+              ))
+          : authRoutes.map((route, index) => (
+              <Route
+                key={index}
+                path={route.path}
+                element={<route.component />}
+              />
+            ))}
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>

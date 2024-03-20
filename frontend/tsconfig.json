@@ -16,6 +16,6 @@
     "incremental": true,
     "types": ["node"]
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/config/assetTypes.d.ts"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules", "lib", "dist"]
 }

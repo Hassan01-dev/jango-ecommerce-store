@@ -18,7 +18,14 @@ const ProductSchema = new Schema<ProductModelType>(
     },
     description: { type: String, default: '', trim: true },
     stock: { type: Number, default: 0, min: 0 },
-    sku: { type: String, unique: true },
+    sku: {
+      type: String,
+      unique: true,
+      match: [
+        /^[A-Za-z0-9-_]+$/,
+        'SKU must only contain letters, numbers, dashes and underscores'
+      ]
+    },
     images: { type: [String], default: [] },
     tags: { type: [String], default: [] },
     category: {
