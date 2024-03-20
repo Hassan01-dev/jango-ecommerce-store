@@ -6,6 +6,8 @@ import InstagramIcon from './InstagramIcon'
 import WebLinkIcon from './WebLinkIcon'
 import YouTubeIcon from './YouTubeIcon'
 import LinkedInIcon from './LinkedInIcon'
+import RedditIcon from './RedditIcon'
+import DefaultIcon from './DefaultIcon'
 
 export {
   GoogleIcon,
@@ -15,5 +17,7 @@ export {
   InstagramIcon,
   WebLinkIcon,
   YouTubeIcon,
-  LinkedInIcon
+  LinkedInIcon,
+  RedditIcon,
+  DefaultIcon
 }

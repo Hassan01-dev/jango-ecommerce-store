@@ -1,3 +1,5 @@
+import { MerchantSignupFormType } from './merchantSignup'
+
 export type AuthContextType = {
   isLoggedIn: boolean
   isMerchant: boolean
@@ -11,8 +13,7 @@ export type AuthContextType = {
     formData: SignupFormType
   ) => Promise<{ success: boolean; error?: string }>
   merchantSignup: (
-    email: string,
-    password: string
+    formData: MerchantSignupFormType
   ) => Promise<{ success: boolean; error?: string }>
 }
 
@@ -31,13 +32,6 @@ export type SignupFormType = {
 }
 
 export type LoginFormType = {
-  email: string
-  password: string
-}
-
-export type MerchantSignupFormType = {
-  name: string
-  sku: string
   email: string
   password: string
 }

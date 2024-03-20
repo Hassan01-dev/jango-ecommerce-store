@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/AuthProvider'
 import { toast } from 'react-hot-toast'
 import { GoogleIcon, GithubIcon, TwitterIcon } from '../../assets/icons'
-import { SignupFormType } from '../../utils/types/authContextTypes'
+import { SignupFormType } from '../../utils/types/auth'
 
 const Signup = () => {
   const [formData, setFormData] = useState<SignupFormType>({

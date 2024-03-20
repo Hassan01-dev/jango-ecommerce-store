@@ -37,13 +37,16 @@ const MerchantSchema = new Schema<MerchantModelType>(
     logo: { type: String, default: '' },
     socialMedia: {
       website: { type: String, match: /^https?:\/\// },
-      youtube: { type: String, match: /^https:\/\/www.youtube.com\/(channel|c|user)\// },
+      youtube: {
+        type: String,
+        match: /^https:\/\/www.youtube.com\/(channel|c|user)\//
+      },
       twitter: { type: String, match: /^https:\/\/twitter.com\// },
       facebook: { type: String, match: /^https:\/\/www.facebook.com\// },
       linkedin: { type: String, match: /^https:\/\/www.linkedin.com\// },
       instagram: { type: String, match: /^https:\/\/www.instagram.com\// },
       reddit: { type: String, match: /^https:\/\/www.reddit.com\// }
-    },
+    }
   },
   { timestamps: true }
 )

@@ -7,17 +7,17 @@ type MerchantAttributes = {
   password: string
   sku: string
   logo?: string
-  socialMedia?: MerchantSocialMedia
+  socialMedia: MerchantSocialMedia
 }
 
 export type MerchantSocialMedia = {
-  website?: string;
-  youtube?: string;
-  twitter?: string;
-  facebook?: string;
-  linkedin?: string;
-  instagram?: string;
-  reddit?: string;
+  website?: string
+  youtube?: string
+  twitter?: string
+  facebook?: string
+  linkedin?: string
+  instagram?: string
+  reddit?: string
 }
 
 export default interface MerchantModelType

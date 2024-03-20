@@ -12,7 +12,8 @@ import {
   AuthFormType,
   LoginFormType,
   SignupFormType
-} from '../utils/types/authContextTypes'
+} from '../utils/types/auth'
+import { MerchantSignupFormType } from '../utils/types/auth/merchantSignup'
 
 const { API_URL } = constansts
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -42,7 +43,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsLoading(false)
   }, [])
 
-  const handleAuth = async (endpoint: string, body: AuthFormType) => {
+  const handleAuth = async (
+    endpoint: string,
+    body: AuthFormType | MerchantSignupFormType
+  ) => {
     try {
       const res = await fetch(`${API_URL}/${endpoint}`, {
         method: 'POST',
@@ -87,8 +91,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       signup: async (formData: SignupFormType) => {
         return handleAuth('signup', formData)
       },
-      merchantSignup: async (email: string, password: string) => {
-        return handleAuth('merchant/signup', { email, password })
+      merchantSignup: async (formData: MerchantSignupFormType) => {
+        return handleAuth('merchant/signup', formData)
       }
     }),
     [isLoggedIn, isMerchant, isLoading]

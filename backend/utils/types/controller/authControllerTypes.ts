@@ -1,4 +1,5 @@
 import { Request } from 'express'
+import { MerchantSocialMedia } from '../models/merchant'
 
 export interface LoginRequest extends Request {
   body: {
@@ -13,6 +14,16 @@ export interface SignupRequest extends Request {
     lastName: string
     email: string
     password: string
+  }
+}
+
+export interface MerchantSignupRequest extends Request {
+  body: {
+    name: string
+    email: string
+    password: string
+    sku: string
+    social: MerchantSocialMedia
   }
 }
 
