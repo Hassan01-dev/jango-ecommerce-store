@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../../hooks/AuthProvider'
 import { toast } from 'react-hot-toast'
 import FirstStep from './FirstStep'
 import SecondStep from './SecondStep'
 import StepThree from './ThirdStep'
 import { MerchantSignupFormType } from '../../../utils/types/auth/merchantSignup'
+import { merchantSignup } from '../../../redux/slices/authSlice'
+import { merchantSignupAction } from '../../../actions/auth'
+import { useAppDispatch } from '../../../hooks'
 
 const MultiStepForm = () => {
   const [step, setStep] = useState(1)
@@ -26,7 +28,7 @@ const MultiStepForm = () => {
   })
 
   const navigate = useNavigate()
-  const { merchantSignup } = useAuth()
+  const dispatch = useAppDispatch()
 
   const nextStep = () => setStep(step + 1)
   const prevStep = () => setStep(step - 1)
@@ -53,16 +55,17 @@ const MultiStepForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
     try {
-      const response = await merchantSignup(formData)
-      if (response.success) {
+      const { success, data, error } = await merchantSignupAction(formData)
+      if (success) {
+        const { userType, token } = data
+        dispatch(merchantSignup({ token, userType }))
         navigate('/dashboard')
       } else {
-        toast.error('Error while Signing Up the user')
+        toast.error(error)
       }
-    } catch {
-      toast.error('Server Error')
+    } catch (error: any) {
+      toast.error(error.message)
     }
   }
 

@@ -1,17 +1,18 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import {
   Navbar,
   NavbarBrand,
   NavbarCollapse,
-  NavbarLink,
   NavbarToggle
 } from 'flowbite-react'
-import { useAuth } from '../../hooks/AuthProvider'
+import { selectAuth } from '../../redux/slices/authSlice'
+import { logout } from '../../redux/slices/authSlice'
+import { useAppDispatch, useAppSelector } from '../../hooks'
+import { NavLink } from 'react-router-dom'
 
 const NavBar = () => {
-  const { isLoggedIn, logout } = useAuth()
-
-  const currentPath = useMemo(() => window.location.pathname, [])
+  const { isAuthenticated } = useAppSelector(selectAuth)
+  const dispatch = useAppDispatch()
 
   return (
     <Navbar fluid rounded>
@@ -23,29 +24,32 @@ const NavBar = () => {
       </NavbarBrand>
       <NavbarToggle />
       <NavbarCollapse>
-        {isLoggedIn ? (
-          <NavbarLink
-            onClick={logout}
-            className="cursor-pointer hover:!text-purple-600"
+        {isAuthenticated ? (
+          <NavLink
+            to="/"
+            onClick={() => dispatch(logout())}
+            className="hover:!text-purple-600"
           >
             Logout
-          </NavbarLink>
+          </NavLink>
         ) : (
           <>
-            <NavbarLink
-              className={`${currentPath === '/login' ? '!text-purple-600' : 'hover:!text-purple-600'}`}
-              href="/login"
-              active={currentPath === '/login'}
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? '!text-purple-600' : 'hover:!text-purple-600'
+              }
+              to="/login"
             >
               Login
-            </NavbarLink>
-            <NavbarLink
-              className={`${currentPath === '/merchant/login' ? '!text-purple-600' : 'hover:!text-purple-600'}`}
-              href="/merchant/login"
-              active={currentPath === '/merchant/login'}
+            </NavLink>
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? '!text-purple-600' : 'hover:!text-purple-600'
+              }
+              to="/merchant/login"
             >
               Merchant
-            </NavbarLink>
+            </NavLink>
           </>
         )}
       </NavbarCollapse>
@@ -54,3 +58,5 @@ const NavBar = () => {
 }
 
 export default NavBar
+
+// block py-2 pr-4 pl-3 md:p-0 border-b border-gray-100 text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-cyan-700 md:dark:hover:bg-transparent md:dark:hover:text-white hover:!text-purple-600

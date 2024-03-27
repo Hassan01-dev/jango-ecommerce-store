@@ -3,10 +3,12 @@ import Button from '../shared/CustomButton'
 import SocialButton from '../shared/SocialButton'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../hooks/AuthProvider'
 import { toast } from 'react-hot-toast'
 import { GoogleIcon, GithubIcon, TwitterIcon } from '../../assets/icons'
 import { SignupFormType } from '../../utils/types/auth'
+import { signup } from '../../redux/slices/authSlice'
+import { signupAction } from '../../actions/auth'
+import { useAppDispatch } from '../../hooks'
 
 const Signup = () => {
   const [formData, setFormData] = useState<SignupFormType>({
@@ -18,25 +20,26 @@ const Signup = () => {
 
   const { firstName, lastName, email, password } = formData
 
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const navigate = useNavigate()
-  const { signup } = useAuth()
-
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
-
     try {
-      const response = await signup(formData)
-      if (response.success) {
+      const { success, data, error } = await signupAction(formData)
+      if (success) {
+        const { userType, token } = data
+        dispatch(signup({ token, userType }))
         navigate('/dashboard')
       } else {
-        toast.error('Error while Signing Up the user')
+        toast.error(error)
       }
-    } catch {
-      toast.error('Server Error')
+    } catch (error: any) {
+      toast.error(error.message)
     }
   }
 

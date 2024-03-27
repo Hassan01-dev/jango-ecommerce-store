@@ -3,10 +3,12 @@ import Button from '../shared/CustomButton'
 import SocialButton from '../shared/SocialButton'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../hooks/AuthProvider'
 import { toast } from 'react-hot-toast'
 import { GoogleIcon, GithubIcon, TwitterIcon } from '../../assets/icons'
 import { LoginFormType } from '../../utils/types/auth'
+import { login } from '../../redux/slices/authSlice'
+import { loginAction } from '../../actions/auth'
+import { useAppDispatch } from '../../hooks'
 
 const Login = () => {
   const [formData, setFormData] = useState<LoginFormType>({
@@ -15,7 +17,7 @@ const Login = () => {
   })
   const { email, password } = formData
 
-  const { login } = useAuth()
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,14 +27,16 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const { success } = await login(formData)
+      const { success, data, error } = await loginAction(formData)
       if (success) {
+        const { userType, token } = data
+        dispatch(login({ token, userType }))
         navigate('/products')
       } else {
-        toast.error('Error logging in')
+        toast.error(error)
       }
-    } catch {
-      toast.error('Server error')
+    } catch (error: any) {
+      toast.error(error.message)
     }
   }
 
